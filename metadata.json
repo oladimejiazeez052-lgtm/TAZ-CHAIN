@@ -1,0 +1,6 @@
+{
+  "name": "Taz Chain",
+  "description": "Taz Chain Technical Consultancy and Digital Architecture Platform.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
