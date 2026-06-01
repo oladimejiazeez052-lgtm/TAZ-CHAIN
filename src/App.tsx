@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Globe,
   Users2,
@@ -36,6 +36,21 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<string>("home");
   const [isInquiryOpen, setIsInquiryOpen] = useState<boolean>(false);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
+
+  // Slideshow for Hero Background Photos (Big, Bold & Professional)
+  const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
+  const heroSlides = [
+    "/src/assets/images/hero_illustration_1780258840139.png",
+    "/src/assets/images/hero_ill_two_1780290909447.png",
+    "/src/assets/images/hero_ill_three_1780290926773.png"
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentHeroSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 4500);
+    return () => clearInterval(interval);
+  }, []);
 
   // States for Contact form page
   const [contactForm, setContactForm] = useState<InquiryFormData>({
@@ -273,54 +288,58 @@ export default function App() {
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-fuchsia-200/20 rounded-full blur-3xl transform translate-x-1/4 -translate-y-1/4 pointer-events-none z-0" />
                 <div className="absolute bottom-0 left-10 w-[550px] h-[550px] bg-amber-200/20 rounded-full blur-3xl pointer-events-none z-0" />
 
-                {/* Dynamic Floating Background Illustration (Moving Background Canvas) */}
-                <div className="absolute right-0 top-0 bottom-0 w-full lg:w-1/2 pointer-events-none select-none overflow-hidden z-0 flex items-center justify-center lg:justify-end lg:pr-12">
+                {/* Dynamic Floating Background Illustration with Ken Burns Slideshow (Big, Bold & Enterprise-Grade) */}
+                <div className="absolute right-0 top-0 bottom-0 w-full lg:w-[55%] xl:w-[60%] pointer-events-none select-none overflow-hidden z-0 flex items-center justify-center lg:justify-end lg:pr-6">
                   {/* Glowing background circles for depth */}
-                  <div className="absolute w-[450px] h-[450px] bg-gradient-to-r from-violet-300/40 via-fuchsia-300/30 to-amber-300/40 rounded-full blur-3xl pointer-events-none transform translate-x-20 translate-y-10 animate-pulse" />
+                  <div className="absolute w-[500px] h-[500px] bg-gradient-to-r from-violet-300/50 via-fuchsia-300/40 to-amber-300/40 rounded-full blur-3xl pointer-events-none transform translate-x-20 translate-y-10 animate-pulse" />
                   
-                  {/* Continuous drifting, slow floating, and subtle rotational movement layout */}
-                  <motion.div
-                    animate={{ 
-                      y: [0, -18, 12, -10, 0], 
-                      x: [0, 10, -12, 6, 0],
-                      rotate: [0, 1.5, -1.5, 0.8, 0],
-                      scale: [1, 1.02, 0.98, 1.01, 1]
-                    }}
-                    transition={{ 
-                      duration: 15, 
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                    className="relative w-[340px] h-[340px] sm:w-[440px] sm:h-[440px] md:w-[480px] md:h-[480px] lg:w-[580px] lg:h-[580px] xl:w-[650px] xl:h-[650px] flex items-center justify-center mix-blend-multiply opacity-30 sm:opacity-40 lg:opacity-[0.98]"
-                  >
-                    <img
-                      src="/src/assets/images/hero_illustration_1780258840139.png"
-                      alt="Digital Enterprise Solutions Background Illustration"
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-contain relative z-10 select-none pointer-events-none filter hue-rotate-[15deg] saturate-125"
-                    />
-                  </motion.div>
+                  {/* Layered images for a completely seamless crossfade with individual slow Ken Burns scale */}
+                  {heroSlides.map((slide, idx) => {
+                    const isActive = currentHeroSlide === idx;
+                    return (
+                      <motion.div
+                        key={slide}
+                        initial={{ opacity: 0 }}
+                        animate={{ 
+                          opacity: isActive ? 1 : 0,
+                          scale: isActive ? [1.02, 1.09, 1.02] : 1.02,
+                        }}
+                        transition={{ 
+                          opacity: { duration: 1.4, ease: "easeInOut" },
+                          scale: { duration: 25, repeat: Infinity, ease: "linear" }
+                        }}
+                        className="absolute inset-0 flex items-center justify-center lg:justify-end p-4 sm:p-8 lg:p-12 w-full h-full opacity-20 sm:opacity-30 lg:opacity-100 transition-opacity duration-500"
+                      >
+                        <img
+                          src={slide}
+                          alt={`Digital Enterprise Solutions Slide ${idx + 1}`}
+                          referrerPolicy="no-referrer"
+                          className="w-[380px] h-[380px] sm:w-[480px] sm:h-[480px] md:w-[540px] md:h-[540px] lg:w-[640px] lg:h-[640px] xl:w-[760px] xl:h-[760px] object-contain relative z-10 select-none pointer-events-none filter hue-rotate-[10deg] saturate-[1.15] drop-shadow-2xl"
+                        />
+                      </motion.div>
+                    );
+                  })}
 
                   {/* Parallax drifting circular accent nodes to make the background feel alive */}
                   <motion.div
                     animate={{ y: [0, -25, 15, 0], x: [0, -12, 18, 0] }}
                     transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute right-[22%] top-[30%] w-4 h-4 rounded-full bg-gradient-to-r from-pink-500 to-rose-400 opacity-60 blur-[1px] hidden lg:block"
+                    className="absolute right-[22%] top-[30%] w-4 h-4 rounded-full bg-gradient-to-r from-pink-500 to-rose-400 opacity-60 blur-[1px] hidden lg:block z-20"
                   />
                   <motion.div
                     animate={{ y: [0, 20, -18, 0], x: [0, 18, -12, 0] }}
                     transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute right-[32%] bottom-[25%] w-5 h-5 rounded-full bg-gradient-to-r from-amber-400 to-orange-400 opacity-50 blur-[1px] hidden lg:block"
+                    className="absolute right-[32%] bottom-[25%] w-5 h-5 rounded-full bg-gradient-to-r from-amber-400 to-orange-400 opacity-50 blur-[1px] hidden lg:block z-20"
                   />
                   <motion.div
                     animate={{ y: [0, -10, -25, 0], x: [0, -15, -8, 0] }}
                     transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute right-[12%] bottom-[35%] w-3 h-3 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-400 opacity-60 blur-[1px] hidden lg:block"
+                    className="absolute right-[12%] bottom-[35%] w-3 h-3 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-400 opacity-60 blur-[1px] hidden lg:block z-20"
                   />
                   <motion.div
                     animate={{ y: [0, 22, -8, 0], rotate: [0, 180, 360] }}
                     transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
-                    className="absolute right-[18%] top-[18%] w-10 h-10 rounded-lg border border-fuchsia-500/20 bg-fuchsia-50/10 flex items-center justify-center opacity-80 hidden lg:flex"
+                    className="absolute right-[18%] top-[18%] w-10 h-10 rounded-lg border border-fuchsia-500/20 bg-fuchsia-50/10 flex items-center justify-center opacity-80 hidden lg:flex z-20"
                   >
                     <div className="w-2.5 h-2.5 rounded-full bg-fuchsia-500/50 animate-ping" />
                   </motion.div>
@@ -486,6 +505,87 @@ export default function App() {
                         </div>
                       </div>
                     ))}
+                  </div>
+                </div>
+              </section>
+
+              {/* Founder Biography Section */}
+              <section className="py-24 px-6 bg-gradient-to-br from-slate-50 via-violet-50/10 to-fuchsia-50/10 border-t border-gray-200 overflow-hidden relative">
+                {/* Visual decorative ambient effects */}
+                <div className="absolute top-1/4 right-0 w-80 h-80 bg-fuchsia-200/15 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute bottom-1/4 left-0 w-80 h-80 bg-violet-200/15 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="max-w-[1280px] mx-auto relative z-10">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    {/* Biography details on the left */}
+                    <div className="lg:col-span-7 space-y-6">
+                      <div className="inline-flex items-center gap-2 bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 text-fuchsia-700 border border-fuchsia-200/80 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-xs">
+                        <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-505 animate-pulse" />
+                        Meet the Founder
+                      </div>
+                      <h2 className="font-sans text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">
+                        Architecting Excellence <br />
+                        <span className="bg-gradient-to-r from-violet-600 via-fuchsia-600 to-rose-500 bg-clip-text text-transparent font-black">With Data-Driven Rigor</span>
+                      </h2>
+                      <div className="font-sans text-slate-700 text-sm md:text-base leading-relaxed space-y-4 font-medium">
+                        <p>
+                          My name is <strong className="text-slate-950 font-bold">Tajudeen Azeez Olanrewaju</strong>. I am the Lead Developer and AI Architect behind TazChain, where we engineer robust digital ecosystems for growing businesses. With a professional foundation in biochemistry, I bring a unique, data-driven approach to technical architecture.
+                        </p>
+                        <p>
+                          At TazChain, I specialize in developing high-fidelity web platforms and custom automation pipelines designed for speed, consistency, and conversion. My work is dedicated to providing technical excellence—from complex administrative workflows to bespoke coding mentorship—ensuring that every solution we deploy is built for enterprise-grade performance.
+                        </p>
+                        <p>
+                          Today, I bridge those worlds to architect enterprise-grade digital systems. Whether I am building high-performance web storefronts, optimizing automated CRM pipelines, or fostering the next generation of coders through our Unified Learning Environments, my mission is the same: transforming complex challenges into seamless, scalable growth for your business.
+                        </p>
+                      </div>
+
+                      {/* Achievements stats under the bio */}
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 pt-6 border-t border-violet-100">
+                        <div>
+                          <span className="text-xs text-slate-500 font-bold block uppercase tracking-wider">SPECIALIZATION</span>
+                          <span className="font-sans text-sm font-extrabold text-slate-900 block mt-1">AI & Web Architect</span>
+                        </div>
+                        <div>
+                          <span className="text-xs text-slate-500 font-bold block uppercase tracking-wider">FOUNDATION</span>
+                          <span className="font-sans text-sm font-extrabold text-slate-900 block mt-1">Biochemistry & Systems</span>
+                        </div>
+                        <div>
+                          <span className="text-xs text-slate-500 font-bold block uppercase tracking-wider">MISSION</span>
+                          <span className="font-sans text-sm font-extrabold text-slate-900 block mt-1">Enterprise Scalability</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Picture on the right hand side */}
+                    <div className="lg:col-span-5 flex justify-center">
+                      <div className="relative group max-w-[400px] w-full">
+                        {/* Glowing backdrop border line */}
+                        <div className="absolute -inset-1.5 bg-gradient-to-r from-violet-600 via-fuchsia-600 to-rose-500 rounded-2xl blur-md opacity-25 group-hover:opacity-45 transition-opacity duration-500" />
+                        
+                        {/* Perfect container frame */}
+                        <div className="relative bg-white rounded-2xl p-2.5 shadow-xl border border-violet-200/50 overflow-hidden">
+                          <div className="rounded-xl overflow-hidden aspect-[3/4] relative bg-slate-50">
+                            <img
+                              src="/src/assets/images/tajudeen_portrait_1780292508469.png"
+                              alt="Tajudeen Azeez Olanrewaju"
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                              referrerPolicy="no-referrer"
+                            />
+                            {/* Linear elegant bottom gradient overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent opacity-90" />
+                            
+                            {/* Portrait info banner */}
+                            <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-3.5 rounded-xl border border-violet-100/50 shadow-lg">
+                              <div className="font-sans text-sm font-black text-slate-900">Tajudeen Azeez Olanrewaju</div>
+                              <div className="flex items-center justify-between mt-0.5">
+                                <span className="text-[10px] text-fuchsia-700 font-extrabold uppercase tracking-wider">Lead Developer & AI Architect</span>
+                                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </section>
@@ -894,29 +994,27 @@ export default function App() {
                     <h2 className="font-sans text-lg font-bold text-gray-950 mb-2 border-b border-gray-100 pb-2">Direct lines</h2>
                     
                     <div className="flex gap-4 items-start">
-                      <Mail className="text-blue-600 shrink-0 mt-0.5" size={18} />
+                      <Mail className="text-violet-600 shrink-0 mt-0.5" size={18} />
                       <div>
                         <span className="text-[10px] font-bold text-gray-500 uppercase block mb-0.5">Email</span>
-                        <span className="font-sans text-sm font-semibold text-gray-900">enterprise@tazchain.com</span>
+                        <span className="font-sans text-sm font-bold text-transparent bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text select-all">oladimejiazeez052@gmail.com</span>
                       </div>
                     </div>
 
                     <div className="flex gap-4 items-start">
-                      <Phone className="text-blue-600 shrink-0 mt-0.5" size={18} />
+                      <Phone className="text-fuchsia-600 shrink-0 mt-0.5" size={18} />
                       <div>
                         <span className="text-[10px] font-bold text-gray-500 uppercase block mb-0.5">Phone</span>
-                        <span className="font-sans text-sm font-semibold text-gray-900">+1 (800) 555-0199</span>
+                        <span className="font-sans text-sm font-bold text-transparent bg-gradient-to-r from-fuchsia-600 to-rose-500 bg-clip-text select-all">08109408629</span>
                       </div>
                     </div>
 
                     <div className="flex gap-4 items-start">
-                      <MapPin className="text-blue-600 shrink-0 mt-0.5" size={18} />
+                      <MapPin className="text-amber-500 shrink-0 mt-0.5" size={18} />
                       <div>
-                        <span className="text-[10px] font-bold text-gray-500 uppercase block mb-0.5">HQ Global Node</span>
-                        <p className="text-xs text-gray-650 leading-relaxed font-sans">
-                          100 Tech Center Drive<br />
-                          Suite 400<br />
-                          San Francisco, CA 94105
+                        <span className="text-[10px] font-bold text-gray-500 uppercase block mb-0.5">Location</span>
+                        <p className="font-sans text-sm font-bold text-transparent bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text select-all">
+                          Lagos, Nigeria
                         </p>
                       </div>
                     </div>
